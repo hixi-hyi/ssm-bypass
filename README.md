@@ -2,11 +2,13 @@
 This binary will export the path of SSM ParameterStore as an environment variables.
 For example, it can be used in entrypoint.sh.
 
+SSM Parameters put
 ```
-/your/pass/HOGE store hoge
-/your/pass/FUGA store fuga
+/your/pass/HOGE → hoge
+/your/pass/FUGA → fuga
 ```
-to
+
+`$(ssm-bypass /your/pass)` do
 ```
 export HOGE=hoge
 export FUGA=fuga
@@ -18,7 +20,8 @@ export FUGA=fuga
 $(ssm-bypass /your/path/)
 ```
 
-
 # development
+```
 go get github.com/mitchellh/gox
 gox --output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+```
