@@ -16,6 +16,7 @@ export FUGA=fuga
 
 # usage
 1. copy binary for your system from bin
+2. write the bellow code into your entrypoint.sh
 ```
 $(ssm-bypass /your/path/)
 ```
