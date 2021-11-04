@@ -23,6 +23,7 @@ $(ssm-bypass /your/path/)
 
 # development
 ```
+rm -rf bin/
 go get github.com/mitchellh/gox
 gox --output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 ```
