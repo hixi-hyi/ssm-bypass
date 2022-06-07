@@ -2,24 +2,30 @@
 This binary will export the path of SSM ParameterStore as an environment variables.
 For example, it can be used in entrypoint.sh.
 
-SSM Parameters put
+The following are the registered contents of ssm-parameter and the values output by ssm-bypass.
+* ssm-parameter
 ```
 /your/pass/HOGE → hoge
 /your/pass/FUGA → fuga
 ```
 
-`$(ssm-bypass /your/pass)` do
+* `ssm-bypass /your/pass`
 ```
 export HOGE=hoge
 export FUGA=fuga
 ```
 
 # usage
-1. copy binary for your system from bin
+1. copy binary for your system from `bin/`
 2. write the bellow code into your entrypoint.sh
 ```
-eval $(ssm-bypass /your/path/)
+$(ssm-bypass /your/path/)
 ```
+
+# causion
+* If the value of ssm parameter contains shell's special characters such as single quotes, back quotes and dollar sign, please verify the operation thoroughly before using it. It has not been fully verified.
+* Multi-line values are not supported.
+
 
 # development
 ```

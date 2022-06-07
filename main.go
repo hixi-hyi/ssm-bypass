@@ -48,6 +48,6 @@ func main() {
 		nextToken = *res.NextToken
 	}
 	for _, v := range parameters {
-		fmt.Printf("export %s='%s'\n", v.Name, v.Value)
+		fmt.Printf("export %s=%s\n", v.Name, v.Value)
 	}
 }
