@@ -11,23 +11,23 @@ import (
 )
 
 type Parameter struct {
-	Name  string
-	Value string
+	Name         string
+	Value        string
+	EscapedValue string
 }
 
-func main() {
-	flag.Parse()
-	args := flag.Args()
+func GetParameters(path string) []Parameter {
 	sess, err := session.NewSession()
 	if err != nil {
 		panic(err)
 	}
 	svc := ssm.New(sess)
+
 	var parameters []Parameter
 	nextToken := ""
 	for {
 		req := &ssm.GetParametersByPathInput{
-			Path:           aws.String(args[0]),
+			Path:           aws.String(path),
 			WithDecryption: aws.Bool(true),
 		}
 		if nextToken != "" {
@@ -47,7 +47,30 @@ func main() {
 		}
 		nextToken = *res.NextToken
 	}
+	return parameters
+}
+
+func escape(value string) string {
+	escapedValue := value
+	escapedValue = strings.ReplaceAll(escapedValue, "\"", "\\\"")
+	escapedValue = strings.ReplaceAll(escapedValue, "\n", "\\n")
+	return escapedValue
+}
+
+func escapeParameters(parameters []Parameter) []Parameter {
+	for i, v := range parameters {
+		parameters[i].EscapedValue = escape(v.Value)
+	}
+	return parameters
+}
+
+func main() {
+	flag.Parse()
+	args := flag.Args()
+	path := args[0]
+	parameters := GetParameters(path)
+	parameters = escapeParameters(parameters)
 	for _, v := range parameters {
-		fmt.Printf("export %s=%s\n", v.Name, v.Value)
+		fmt.Printf("export %s=%s\n", v.Name, v.EscapedValue)
 	}
 }
