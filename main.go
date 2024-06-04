@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -65,8 +66,18 @@ func escapeParameters(parameters []Parameter) []Parameter {
 }
 
 func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(os.Stderr, "panic: %v\n", r)
+			os.Exit(1)
+		}
+	}()
 	flag.Parse()
 	args := flag.Args()
+	if len(args) != 1 {
+		fmt.Fprintf(os.Stderr, "Usage: %s /your/path/\n", os.Args[0])
+		os.Exit(1)
+	}
 	path := args[0]
 	parameters := GetParameters(path)
 	parameters = escapeParameters(parameters)

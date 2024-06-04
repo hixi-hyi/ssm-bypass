@@ -9,7 +9,7 @@ The following are the registered contents of ssm-parameter and the values output
 /your/path/FUGA → fuga
 ```
 
-* `ssm-bypass /your/pass`
+* `ssm-bypass /your/path/`
 ```
 export HOGE=hoge
 export FUGA=fuga
@@ -46,5 +46,5 @@ These transformations and precautions are important to maintain the integrity of
 ```
 rm -rf bin/
 go get github.com/mitchellh/gox
-gox --output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
+gox -osarch='!darwin/386' --output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}"
 ```
